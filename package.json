@@ -1,0 +1,26 @@
+{
+	"name": "@nuogz/wock-client",
+	"version": "2.0.0",
+	"description": "WebSocket client library",
+	"author": "Nuogz",
+	"license": "LGPL-3.0-or-later",
+	"repository": {
+		"type": "git",
+		"url": "github:nuogz/wock-client"
+	},
+	"type": "module",
+	"typesSource": [
+		"browser"
+	],
+	"engines": {
+		"node": ">=14.18.1"
+	},
+	"sideEffects": false,
+	"main": "./index.js",
+	"files": [
+		"index.js"
+	],
+	"devDependencies": {
+		"eslint": "^8.24.0"
+	}
+}
