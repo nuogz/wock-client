@@ -278,7 +278,7 @@ export default class Wock {
 	}
 }
 
-
+/** @type {Wock} */
 export let $wock;
 export const install = app => {
 	$wock = new Wock(

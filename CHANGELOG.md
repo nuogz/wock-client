@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v2.0.1 - 2022.10.13 09
+* improve some jsdoc
+
+
 ## v2.0.0 - 2022.10.12 10
 * split client and server code from `wock@1.x` for better fucking import
 * support simple i18n
