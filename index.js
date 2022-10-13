@@ -43,13 +43,13 @@ export default class Wock {
 
 	log = {
 		locale: 'en',
-		isHightlight: false,
+		isHighlight: false,
 		info: () => { },
 		error: () => { },
 	};
 
 
-	constructor(url, { logInfo, logError, locale, isHightlight }, webSocket) {
+	constructor(url, { logInfo, logError, locale, isHighlight }, webSocket) {
 		this.url = url;
 
 		this.ping = true;
@@ -66,9 +66,9 @@ export default class Wock {
 		if(typeof logInfo == 'function') { this.log.info = logInfo; }
 		if(typeof logError == 'function') { this.log.error = logError; }
 		if(locale) { this.log.locale = locale; }
-		this.log.isHightlight = ~~isHightlight;
+		this.log.isHighlight = ~~isHighlight;
 
-		const locales = this.log.isHightlight ? localesHighlight : localesDirect;
+		const locales = this.log.isHighlight ? localesHighlight : localesDirect;
 		this.log.locales = locales[locale] ?? locales[(this.locale ?? '').split(' - ')[0]] ?? locales.en;
 		this.TT = (key, info) => this.log.locales[key]?.replace(/{{(.*?)}}/g, (matchRaw, match) => info[match] || matchRaw) || key;
 		this.TT = (key, info) => this.log.locales[key]?.replace(/(?<!~){{(.*?)}}/g, (matchRaw, match) => info[match] || matchRaw) || key;
