@@ -66,7 +66,7 @@ export default class Wock {
 
 		const locales = this.log.isHightlight ? localesHighlight : localesDirect;
 		this.log.locales = locales[locale] ?? locales[(this.locale ?? '').split(' - ')[0]] ?? locales.en;
-		this.TT = (key, info) => this.log.locales[key].replace(/{{(.*?)}}/g, (matchRaw, match) => info[match] || matchRaw);
+		this.TT = (key, info) => this.log.locales[key]?.replace(/{{(.*?)}}/g, (matchRaw, match) => info[match] || matchRaw) || key;
 
 
 		this.WebSocket = webSocket ?? WebSocket;
@@ -91,7 +91,7 @@ export default class Wock {
 
 			oneOff = true;
 
-			this.log.info(this.TT(reason ? 'closeReason' : 'close', { reason }), ...params);
+			this.log.info(this.TT(reason ? 'closedReason' : 'close', { reason }), ...params);
 
 			if(this.ping) {
 				clearTimeout(pingOut);

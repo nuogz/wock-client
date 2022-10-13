@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v2.0.2 - 2022.10.13 16
+* fix little bug for locale translate
+
+
 ## v2.0.1 - 2022.10.13 09
 * improve some jsdoc
 
