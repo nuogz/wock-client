@@ -67,6 +67,7 @@ export default class Wock {
 		const locales = this.log.isHightlight ? localesHighlight : localesDirect;
 		this.log.locales = locales[locale] ?? locales[(this.locale ?? '').split(' - ')[0]] ?? locales.en;
 		this.TT = (key, info) => this.log.locales[key]?.replace(/{{(.*?)}}/g, (matchRaw, match) => info[match] || matchRaw) || key;
+		this.TT = (key, info) => this.log.locales[key]?.replace(/(?<!~){{(.*?)}}/g, (matchRaw, match) => info[match] || matchRaw) || key;
 
 
 		this.WebSocket = webSocket ?? WebSocket;
