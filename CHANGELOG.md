@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v2.0.5 - 2022.10.13 17
+* fix typo
+
+
 ## v2.0.4 - 2022.10.13 17
 * clean code
 * improve locale
