@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v2.0.7 - 2022.10.13 17
+* improve output
+
+
 ## v2.0.6 - 2022.10.13 17
 * fix typo
 

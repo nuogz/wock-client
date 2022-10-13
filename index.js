@@ -6,6 +6,7 @@ const localesDirect = {
 		openedReason: 'Wock opened, url: {{url}}, reason: {{reason}}',
 		install: 'install',
 		reopen: 'reopen',
+		closeCode: 'close code: {{code}}',
 	},
 	zh: {
 		closed: 'Wock已断开',
@@ -14,6 +15,7 @@ const localesDirect = {
 		openedReason: 'Wock已连接，目标：{{url}}，原因：{{reason}}',
 		install: '初始化',
 		reopen: '重新连接',
+		closeCode: '关闭代码: {{code}}',
 	},
 };
 const localesHighlight = {
@@ -24,6 +26,7 @@ const localesHighlight = {
 		openedReason: '~[Wock] opened, ~[url]~{{{url}}}, ~[reason]~{{{reason}}}',
 		install: 'install',
 		reopen: 'reopen',
+		closeCode: '~[close code]~{{{code}}}',
 	},
 	zh: {
 		closed: '~[Wock]已断开',
@@ -32,6 +35,7 @@ const localesHighlight = {
 		openedReason: '~[Wock]已连接，~[目标]~{{{url}}}，~[原因]~{{{reason}}}',
 		install: '初始化',
 		reopen: '重新连接',
+		closeCode: '~[关闭代码]~{{{code}}}',
 	},
 };
 
@@ -117,7 +121,15 @@ export default class Wock {
 		};
 
 		this.wock.addEventListener('error', event => closeHandle('error', event?.error instanceof Error ? event.error : event));
-		this.wock.addEventListener('close', event => closeHandle('close', typeof event?.code == 'number' ? event.code : event));
+		this.wock.addEventListener('close', event => closeHandle('close',
+			(event?.reason && event?.code)
+				? `${event.reason} (${event.code})`
+				: event?.reason
+					? event.reason
+					: typeof event?.code == 'number'
+						? this.TT('closeCode', { code: event.code })
+						: event
+		));
 
 		return new Promise(resolve => {
 			this.wock.addEventListener('open', () => {
