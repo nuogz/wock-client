@@ -4,14 +4,16 @@ const localesDirect = {
 		closedReason: 'Wock closed, reason: {{reason}}',
 		opened: 'Wock opened, url: {{url}}',
 		openedReason: 'Wock opened, url: {{url}}, reason: {{reason}}',
-		install: 'install'
+		install: 'install',
+		reopen: 'reopen',
 	},
 	zh: {
 		closed: 'Wock已关闭',
 		closedReason: 'Wock已关闭，原因：{{reason}}',
 		opened: 'Wock已打卡，目标：{{url}}',
 		openedReason: 'Wock已打卡，目标：{{url}}，原因：{{reason}}',
-		install: '初始化'
+		install: '初始化',
+		reopen: '重新连接',
 	},
 };
 const localesHighlight = {
@@ -20,14 +22,16 @@ const localesHighlight = {
 		closedReason: '~[Wock] closed, ~[reason]~{{{reason}}}',
 		opened: '~[Wock] opened, ~[url]~{{{url}}}',
 		openedReason: '~[Wock] opened, ~[url]~{{{url}}}, ~[reason]~{{{reason}}}',
-		install: 'install'
+		install: 'install',
+		reopen: 'reopen',
 	},
 	zh: {
 		closed: '~[Wock]已关闭',
 		closedReason: '~[Wock]已关闭，~[原因]~{{{reason}}}',
 		opened: '~[Wock]已打卡，~[目标]~{{{url}}}',
 		openedReason: '~[Wock]已打卡，~[目标]~{{{url}}}，~[原因]~{{{reason}}}',
-		install: '初始化'
+		install: '初始化',
+		reopen: '重新连接',
 	},
 };
 
@@ -82,28 +86,28 @@ export default class Wock {
 
 		this.wock = new this.WebSocket(this.url);
 
-		let pingOut;
-		let timeOut;
-		let outCount = 0;
+		let idPingout;
+		let idTimeout;
+		let countTimeout = 0;
 
-		let oneOff = false;
-		let closeHandle = (reason, ...params) => {
-			if(oneOff) { return; }
+		let isCloseHandled = false;
+		const closeHandle = (reason, ...params) => {
+			if(isCloseHandled) { return; }
 
-			oneOff = true;
+			isCloseHandled = true;
 
 			this.log.info(this.TT(reason ? 'closedReason' : 'close', { reason }), ...params);
 
 			if(this.ping) {
-				clearTimeout(pingOut);
-				clearTimeout(timeOut);
+				clearTimeout(idPingout);
+				clearTimeout(idTimeout);
 			}
 
 			this.opening = false;
 
 			if(this.reopen) {
 				setTimeout(async () => {
-					await this.open('reopen');
+					await this.open(this.TT('reopen'));
 
 					if(typeof this.reopen == 'function') {
 						this.reopen(this);
@@ -112,8 +116,8 @@ export default class Wock {
 			}
 		};
 
-		this.wock.addEventListener('error', e => closeHandle('error', e));
-		this.wock.addEventListener('close', e => closeHandle('close', e));
+		this.wock.addEventListener('error', event => closeHandle('error', event?.error instanceof Error ? event.error : event));
+		this.wock.addEventListener('close', event => closeHandle('close', typeof event?.code == 'number' ? event.code : event));
 
 		return new Promise(resolve => {
 			this.wock.addEventListener('open', () => {
@@ -132,21 +136,21 @@ export default class Wock {
 					}
 				};
 
-				let check = (clearCount = true) => {
-					clearTimeout(pingOut);
-					clearTimeout(timeOut);
+				const check = (clearCount = true) => {
+					clearTimeout(idPingout);
+					clearTimeout(idTimeout);
 
 					if(clearCount) {
-						outCount = 0;
+						countTimeout = 0;
 					}
 
-					pingOut = setTimeout(() => {
+					idPingout = setTimeout(() => {
 						this.wock.cast('ping');
 
-						timeOut = setTimeout(() => {
-							outCount++;
+						idTimeout = setTimeout(() => {
+							countTimeout++;
 
-							if(outCount >= 4) {
+							if(countTimeout >= 4) {
 								this.wock.close();
 							}
 							else {

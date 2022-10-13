@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## v2.0.4 - 2022.10.13 17
+* clean code
+* improve locale
+
+
 ## v2.0.3 - 2022.10.13 16
 * improve locale match regexpression
 
