@@ -1,6 +1,6 @@
 {
 	"name": "@nuogz/wock-client",
-	"version": "2.0.7",
+	"version": "3.0.0",
 	"description": "WebSocket client library",
 	"author": "Nuogz",
 	"license": "LGPL-3.0-or-later",
@@ -18,9 +18,18 @@
 	"sideEffects": false,
 	"main": "./index.js",
 	"files": [
-		"index.js"
+		"index.js",
+		"**/*.d.ts"
 	],
+	"scripts": {
+		"emitDeclaration": "tsc ./index.js --declaration --emitDeclarationOnly --allowJs --preserveSymlinks"
+	},
 	"devDependencies": {
-		"eslint": "^8.25.0"
+		"eslint": "^8.33.0",
+		"typescript": "^4.9.5",
+		"ws": "^8.12.0"
+	},
+	"dependencies": {
+		"@nuogz/utility": "^1.6.1"
 	}
 }
