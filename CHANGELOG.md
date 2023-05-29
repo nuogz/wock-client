@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v3.1.1 - 2023.05.29 16
+* improve little locales
+
+
 ## v3.1.0 - 2023.05.29 08
 * use library `@nuogz/i18n` for i18n message
 * update code to properly support browser build

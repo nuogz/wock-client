@@ -2,10 +2,10 @@
 	"install@proto": "install",
 	"reopen@proto": "reopen",
 	"ArgumentError": {
-		"invalidType@proto": "'type' argument must be of non-empty string, value: {{-value,valueType}}",
-		"invalidType@hades": "~[type] argument must be of non-empty ~{string}, value {{-value,valueType@hades}}",
-		"invalidHandle@proto": "'handle' argument must be of function, value: {{-value,valueType}}",
-		"invalidHandle@hades": "~[handle] argument must be of ~{function}, value {{-value,valueType@hades}}"
+		"invalidType@proto": "'type' argument must be of type non-empty string, value: {{-value,valueType}}",
+		"invalidType@hades": "~[type] argument must be of type non-empty ~{string}, value {{-value,valueType@hades}}",
+		"invalidHandle@proto": "'handle' argument must be of type function, value: {{-value,valueType}}",
+		"invalidHandle@hades": "~[handle] argument must be of type ~{function}, value {{-value,valueType@hades}}"
 	},
 	"Error": {
 		"cast@proto": "Wock cast error",
