@@ -1,0 +1,32 @@
+{
+	"install@proto": "install",
+	"reopen@proto": "reopen",
+	"ArgumentError": {
+		"invalidType@proto": "'type' argument must be of non-empty string, value: {{-value,valueType}}",
+		"invalidType@hades": "~[type] argument must be of non-empty ~{string}, value {{-value,valueType@hades}}",
+		"invalidHandle@proto": "'handle' argument must be of function, value: {{-value,valueType}}",
+		"invalidHandle@hades": "~[handle] argument must be of ~{function}, value {{-value,valueType@hades}}"
+	},
+	"Error": {
+		"cast@proto": "Wock cast error",
+		"cast@hades": "~[Wock] cast error",
+		"event@proto": "Wock event '{{type}}' error",
+		"event@hades": "~[Wock] event {{type,value@hades}} error",
+		"eventOnce@proto": "Wock disposable event '{{type}}' error",
+		"eventOnce@hades": "~[Wock] disposable event {{type,value@hades}} error"
+	},
+	"Occur": {
+		"open@proto": "Wock opened, address: {{address}}, reason: {{reason}}",
+		"open@hades": "~[Wock] opened, ~[address] {{address,value@hades}}, ~[reason] {{reason,value@hades}}",
+		"close@proto": "Wock closed, reason: {{reason}}, code: {{code}}",
+		"close@hades": "~[Wock] closed, ~[reason] {{reason,value@hades}}, ~[code] {{code,value@hades}}",
+		"error@proto": "Wock error occured, reason: {{reason}}",
+		"error@hades": "~[Wock] error occured, ~[reason] {{reason,value@hades}}"
+	},
+	"unknownReason@proto": "unknown reason",
+	"unknownReason@hades": "unknown reason",
+	"unknownCode@proto": "unknown code",
+	"unknownCode@hades": "unknown code",
+	"heartbeatTimeout@proto": "heartbeat timeout",
+	"heartbeatTimeout@hades": "heartbeat timeout"
+}

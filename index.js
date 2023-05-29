@@ -1,91 +1,12 @@
 import { injectBaseLogger } from '@nuogz/utility';
 
-
-
-const localesTextAll = {
-	direct: {
-		en: {
-			install: 'install',
-			reopen: 'reopen',
-			error: 'error',
-			unknownReason: 'unknown reason',
-			unknownCode: 'unknown code',
-
-			openOccur: 'Wock opened, URL: {{url}}, reason: {{reason}}',
-			errorOccur: 'Wock error occured, reason: {{reason}}',
-			closeOccur: 'Wock closed, reason: {{reason}}, code: {{code}}',
-
-			heartbeatTimeout: 'heartbeat timeout',
-			castError: 'Wock cast error',
-			eventError: 'Wock {{type}} event error',
-			onceEventError: 'Wock {{type}} disposable event error',
-			paramError: 'Wock {{which}} param error',
-		},
-		zh: {
-			install: '初始化',
-			reopen: '重新连接',
-			error: '错误',
-			unknownReason: '未知原因',
-			unknownCode: '未知代码',
-
-			openOccur: 'Wock 已连接, URL{{url}}, 原因{{reason}}',
-			errorOccur: 'Wock 发生错误, 原因{{reason}}',
-			closeOccur: 'Wock 已关闭, 原因{{reason}}, 代码{{code}}',
-
-			heartbeatTimeout: '心跳超时',
-			castError: 'Wock 通讯错误',
-			eventError: 'Wock 事件({{type}})错误',
-			onceEventError: 'Wock 一次性事件({{type}})错误',
-			paramError: 'Wock 参数({{which}})错误',
-		},
-	},
-	highlight: {
-		en: {
-			install: 'install',
-			reopen: 'reopen',
-			error: 'error',
-			unknownReason: 'unknown reason',
-			unknownCode: 'unknown code',
-
-			openOccur: '~[Wock] opened, ~[URL]~{{{url}}}, ~[reason]~{{{reason}}}',
-			errorOccur: '~[Wock] error occured, ~[reason]~{{{reason}}}',
-			closeOccur: '~[Wock] closed, ~[reason]~{{{reason}}}, ~[code]~{{{code}}}',
-
-			heartbeatTimeout: 'heartbeat timeout',
-			castError: '~[Wock] cast error',
-			eventError: '~[Wock] ~{{{type}}} event error',
-			onceEventError: '~[Wock] ~{{{type}}} disposable event error',
-			paramError: '~[Wock] ~{{{which}}} param error',
-		},
-		zh: {
-			install: '初始化',
-			reopen: '重新连接',
-			error: '错误',
-			unknownReason: '未知原因',
-			unknownCode: '未知代码',
-
-			openOccur: '~[Wock] 已连接, ~[URL]~{{{url}}}, ~[原因]~{{{reason}}}',
-			errorOccur: '~[Wock] 发生错误, ~[原因]~{{{reason}}}',
-			closeOccur: '~[Wock] 已关闭, ~[原因]~{{{reason}}}, ~[代码]~{{{code}}}',
-
-			heartbeatTimeout: '心跳超时',
-			castError: '~[Wock] 通讯错误',
-			eventError: '~[Wock] 事件(~{{{type}}})错误',
-			onceEventError: '~[Wock] 一次性事件(~{{{type}}})错误',
-			paramError: '~[Wock] 参数(~{{{which}}})错误',
-		},
-	},
-};
+import { T } from './src/i18n.lib.js';
 
 
 
-/**
- * @typedef {import("@nuogz/utility/src/injectBaseLogger.js").LoggerLike} LoggerLike
- */
+/** @typedef {import("@nuogz/utility/src/inject-base-logger.pure.js").LoggerLike} LoggerLike */
 
-/**
- * @typedef {import("@nuogz/utility/src/injectBaseLogger.js").LoggerOption} LoggerOption
- */
+/** @typedef {import("@nuogz/utility/src/inject-base-logger.pure.js").LoggerOption} LoggerOption */
 
 
 /**
@@ -95,7 +16,6 @@ const localesTextAll = {
  * @property {number} [intervalWait=24000]
  * @property {boolean} [isReopen=true]
  * @property {number} [intervalReopen=4000]
- * @property {string} [locale='en']
  * @property {boolean} [isLogHighlight=false]
  * @property {LoggerOption} [logger]
  */
@@ -144,10 +64,6 @@ export default class Wock {
 	intervalReopen = 4000;
 
 
-	/** @type {string} */
-	locale = 'en';
-	/** @type {Object<string, string>} */
-	locales;
 	/** @type {boolean} */
 	isLogHighlight = false;
 	/** @type {LoggerLike} */
@@ -165,28 +81,26 @@ export default class Wock {
 	/** @type {LoggerLike} */
 	logMark = () => { };
 
-	TT;
-
 
 
 	/** @type {Object<string, WockEventHandle[]>} */
 	mapHandles = {
 		$error: [
 			(wock, event) => this.logError(
-				this.TT('errorOccur', {
+				T('Occur.error', {
 					reason: event?.error?.message
 						?? event?.error
 						?? event
-						?? this.TT('unknownReason'),
+						?? T('unknownReason'),
 				}),
 				event?.error?.stack ?? undefined,
 			),
 		],
 		$close: [
 			(wock, event) => this.logTrace(
-				this.TT('closeOccur', {
-					reason: event?.reason || this.TT('unknownReason'),
-					code: event?.code ?? this.TT('unknownCode'),
+				T('Occur.close', {
+					reason: event?.reason || T('unknownReason'),
+					code: event?.code ?? T('unknownCode'),
 				})
 			),
 			() => {
@@ -200,12 +114,12 @@ export default class Wock {
 					this.countReopenAll++;
 
 
-					this.open(this.TT('reopen'), true);
+					this.open(T('reopen'), true);
 				}, this.intervalReopen);
 			},
 		],
 		$open: [
-			(wock, reason) => this.logInfo(this.TT('openOccur', { reason, url: this.url })),
+			(wock, reason) => this.logInfo(T('Occur.open', { address: this.url, reason })),
 		],
 		ping: [
 			wock => wock.cast('pong'),
@@ -250,11 +164,11 @@ export default class Wock {
 	 * @param {WockOption} [option]
 	 * @param {WebSocket} [webSocketExternal]
 	 */
-	constructor(url, option = {}, webSocketExternal) {
+	constructor(url, option = {}, webSocketExternal = WebSocket) {
 		this.url = url;
 
 
-		this.WebSocket = webSocketExternal ?? WebSocket;
+		this.WebSocket = webSocketExternal;
 
 
 		this.isHeartbeat = hasOption('isHeartbeat', option) ? !!option.isHeartbeat : this.isHeartbeat;
@@ -265,17 +179,7 @@ export default class Wock {
 		this.intervalReopen = hasOption('intervalReopen', option) ? Number(option.intervalReopen) : this.intervalReopen;
 
 
-		this.locale = hasOption('locale', option) ? option.locale : this.locale;
-		this.isLogHighlight = hasOption('isLogHighlight', option) ? !!option.isLogHighlight : this.isLogHighlight;
-
-		const localesText = this.isLogHighlight ? localesTextAll.highlight : localesTextAll.direct;
-		this.locales = localesText[this.locale] ?? localesText[this.locale.split('-')[0]] ?? localesText.en;
-
-
 		injectBaseLogger(this, Object.assign({ useNameLog: false }, option.logger));
-
-
-		this.TT = (key, data) => this.locales[key]?.replace(/(?<!~){{(.*?)}}/g, (matchRaw, match) => data[match] || matchRaw) || key;
 	}
 
 
@@ -310,7 +214,7 @@ export default class Wock {
 				this.countWaitout++;
 
 				if(this.countWaitout >= 4) {
-					this.websocket.close(4001, this.TT('heartbeatTimeout'));
+					this.websocket.close(4001, T('heartbeatTimeout'));
 				}
 				else {
 					this.checkHeartbeat(false);
@@ -344,7 +248,7 @@ export default class Wock {
 				if(!isPending && isThrowError) {
 					isPending = true;
 
-					reject(event?.error?.message ?? event?.error ?? event ?? this.TT('unknownReason'));
+					reject(event?.error?.message ?? event?.error ?? event ?? T('unknownReason'));
 				}
 
 
@@ -400,7 +304,7 @@ export default class Wock {
 	 * @returns {void}
 	 */
 	cast(type, ...data) {
-		if(!type) { throw Error(this.TT('paramError', { which: 'type' })); }
+		if(!type) { throw TypeError(T('ArgumentError.invalidType', { value: type }, 'Wock().cast')); }
 
 
 		try {
@@ -410,7 +314,7 @@ export default class Wock {
 			if(typeof error?.message == 'string' && ~error.message.indexOf('CLOSED')) { return; }
 
 
-			this.logError(this.TT('castError'), error.message ?? error, error.stack ?? undefined);
+			this.logError(T('Error.cast'), error.message ?? error, error.stack ?? undefined);
 		}
 	}
 
@@ -436,7 +340,7 @@ export default class Wock {
 					await handle(this, ...data);
 				}
 				catch(error) {
-					this.logError(this.TT('onceEventError', { type }), error?.message ?? error ?? this.TT('unknownReason'), error.stack ?? undefined);
+					this.logError(T('Error.eventOnce', { type }), error?.message ?? error ?? T('unknownReason'), error.stack ?? undefined);
 				}
 			}
 		}
@@ -448,7 +352,7 @@ export default class Wock {
 					await handle(this, ...data);
 				}
 				catch(error) {
-					this.logError(this.TT('eventError', { type }), error?.message ?? error ?? this.TT('unknownReason'), error.stack ?? undefined);
+					this.logError(T('Error.event', { type }), error?.message ?? error ?? T('unknownReason'), error.stack ?? undefined);
 				}
 			}
 		}
@@ -472,8 +376,8 @@ export default class Wock {
 	 * @returns {void}
 	 */
 	add(type, handle, isOnce = false) {
-		if(!type) { throw Error(this.TT('paramError', { which: 'type' })); }
-		if(typeof handle != 'function') { throw Error(this.TT('paramError', { which: 'handle' })); }
+		if(!type) { throw TypeError(T('ArgumentError.invalidType', { value: type }, 'Wock().add')); }
+		if(typeof handle != 'function') { throw TypeError(T('ArgumentError.invalidHandle', { value: handle }, 'Wock().add')); }
 
 
 		const mapHandles = isOnce ? this.mapHandlesOnce : this.mapHandles;
@@ -488,8 +392,8 @@ export default class Wock {
 	 * @returns {void}
 	 */
 	del(type, handle, isOnce = false) {
-		if(!type) { throw Error(this.TT('paramError', { which: 'type' })); }
-		if(typeof handle != 'function') { throw Error(this.TT('paramError', { which: 'handle' })); }
+		if(!type) { throw TypeError(T('ArgumentError.invalidType', { value: type }, 'Wock().del')); }
+		if(typeof handle != 'function') { throw TypeError(T('ArgumentError.invalidHandle', { value: handle }, 'Wock().del')); }
 
 
 		const mapHandles = isOnce ? this.mapHandlesOnce : this.mapHandles;
@@ -509,7 +413,7 @@ export default class Wock {
 	 * @returns {WockEventHandle[]}
 	 */
 	get(type, isOnce = false) {
-		if(!type) { throw Error(this.TT('paramError', { which: 'type' })); }
+		if(!type) { throw TypeError(T('ArgumentError.invalidType', { value: type }, 'Wock().get')); }
 
 
 		const mapHandles = isOnce ? this.mapHandlesOnce : this.mapHandles;
@@ -523,7 +427,7 @@ export default class Wock {
 	 * @param {...any} [data]
 	 */
 	run(type, isOnce = false, ...data) {
-		if(!type) { throw Error(this.TT('paramError', { which: 'type' })); }
+		if(!type) { throw TypeError(T('ArgumentError.invalidType', { value: type }, 'Wock().run')); }
 
 
 		this.emit({ type, data }, isOnce);
@@ -535,6 +439,9 @@ export default class Wock {
 	 * @param {...any} [data]
 	 */
 	aun(type, handle, ...data) {
+		if(!type) { throw TypeError(T('ArgumentError.invalidType', { value: type }, 'Wock().aun')); }
+
+
 		this.add(type, handle);
 
 		this.run(type, ...data);
@@ -551,7 +458,6 @@ export const install = app => {
 		{
 			logInfo: (console || {}).log,
 			logError: (console || {}).error,
-			locale: 'zh',
 		}
 	);
 

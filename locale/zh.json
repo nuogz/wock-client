@@ -1,0 +1,32 @@
+{
+	"install@proto": "初始化",
+	"reopen@proto": "重新连接",
+	"ArgumentError": {
+		"invalidType@proto": "参数'type'必须是类型非空的string，值：{{-type,valueType}}",
+		"invalidType@hades": "参数~[type]必须是类型非空的~{string}，值{{-type,valueType@hades}}",
+		"invalidHandle@proto": "参数'handle'必须是类型function，值：{{-type,valueType}}",
+		"invalidHandle@hades": "参数~[handle]必须是类型~{function}，值{{-type,valueType@hades}}"
+	},
+	"Error": {
+		"cast@proto": "Wock 通讯错误",
+		"cast@hades": "~[Wock] 通讯错误",
+		"event@proto": "Wock 事件'{{type}}'错误",
+		"event@hades": "~[Wock] 事件{{type,value@hades}}错误",
+		"eventOnce@proto": "Wock 一次性事件'{{type}}'错误",
+		"eventOnce@hades": "~[Wock] 一次性事件{{type,value@hades}}错误"
+	},
+	"Occur": {
+		"open@proto": "Wock 已连接，地址: {{address}}，原因: {{reason}}",
+		"open@hades": "~[Wock] 已连接，~[地址]{{address,value@hades}}，~[原因]{{reason,value@hades}}",
+		"close@proto": "Wock 已关闭，原因: {{reason}}，代码: {{code}}",
+		"close@hades": "~[Wock] 已关闭，~[原因]{{reason,value@hades}}，~[代码]{{code,value@hades}}",
+		"error@proto": "Wock 发生错误，原因: {{reason}}",
+		"error@hades": "~[Wock] 发生错误，~[原因]{{reason,value@hades}}"
+	},
+	"unknownReason@proto": "未知原因",
+	"unknownReason@hades": "未知原因",
+	"unknownCode@proto": "未知代码",
+	"unknownCode@hades": "未知代码",
+	"heartbeatTimeout@proto": "心跳超时",
+	"heartbeatTimeout@hades": "心跳超时"
+}

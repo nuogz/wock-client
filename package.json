@@ -1,6 +1,6 @@
 {
 	"name": "@nuogz/wock-client",
-	"version": "3.0.0",
+	"version": "3.1.0",
 	"description": "WebSocket client library",
 	"author": "Nuogz",
 	"license": "LGPL-3.0-or-later",
@@ -10,6 +10,7 @@
 	},
 	"type": "module",
 	"typesSource": [
+		"node",
 		"browser"
 	],
 	"engines": {
@@ -17,19 +18,24 @@
 	},
 	"sideEffects": false,
 	"main": "./index.js",
+	"browser": {
+		"./src/i18n.lib.js": "./src/i18n.js"
+	},
 	"files": [
 		"index.js",
+		"src/**",
+		"locale/**",
 		"**/*.d.ts"
 	],
 	"scripts": {
-		"emitDeclaration": "tsc ./index.js --declaration --emitDeclarationOnly --allowJs --preserveSymlinks"
+		"emitDeclaration": "tsc ./index.js --declaration --emitDeclarationOnly --allowJs --moduleResolution nodenext --module esnext --target esnext --experimentalDecorators"
 	},
 	"devDependencies": {
-		"eslint": "^8.33.0",
-		"typescript": "^4.9.5",
-		"ws": "^8.12.0"
+		"eslint": "^8.41.0",
+		"typescript": "^5.0.4"
 	},
 	"dependencies": {
-		"@nuogz/utility": "^1.6.1"
+		"@nuogz/i18n": "^3.2.1",
+		"@nuogz/utility": "^1.7.0"
 	}
 }

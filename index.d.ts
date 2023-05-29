@@ -19,12 +19,6 @@ export default class Wock {
     isReopen: boolean;
     /** @type {number} */
     intervalReopen: number;
-    /** @type {string} */
-    locale: string;
-    /** @type {Object<string, string>} */
-    locales: {
-        [x: string]: string;
-    };
     /** @type {boolean} */
     isLogHighlight: boolean;
     /** @type {LoggerLike} */
@@ -41,7 +35,6 @@ export default class Wock {
     logFatal: LoggerLike;
     /** @type {LoggerLike} */
     logMark: LoggerLike;
-    TT: (key: any, data: any) => any;
     /** @type {Object<string, WockEventHandle[]>} */
     mapHandles: {
         [x: string]: WockEventHandle[];
@@ -142,15 +135,14 @@ export default class Wock {
 /** @type {Wock} */
 export let $wock: Wock;
 export function install(app: any): void;
-export type LoggerLike = import("@nuogz/utility/src/injectBaseLogger.js").LoggerLike;
-export type LoggerOption = import("@nuogz/utility/src/injectBaseLogger.js").LoggerOption;
+export type LoggerLike = import("@nuogz/utility/src/inject-base-logger.pure.js").LoggerLike;
+export type LoggerOption = import("@nuogz/utility/src/inject-base-logger.pure.js").LoggerOption;
 export type WockOption = {
     isHeartbeat?: boolean;
     intervalPing?: number;
     intervalWait?: number;
     isReopen?: boolean;
     intervalReopen?: number;
-    locale?: string;
     isLogHighlight?: boolean;
     logger?: LoggerOption;
 };
