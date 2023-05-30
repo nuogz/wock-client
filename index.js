@@ -454,14 +454,14 @@ export default class Wock {
 export let $wock;
 export const install = app => {
 	$wock = new Wock(
-		new URL('wock', location.origin).toString().replace(/^http/, 'ws'),
+		new URL('wock', globalThis.location.origin).toString().replace(/^http/, 'ws'),
 		{
 			logInfo: (console || {}).log,
 			logError: (console || {}).error,
 		}
 	);
 
-	$wock.open($wock.TT('install'));
+	$wock.open(T('install'));
 
 	app.config.globalProperties.$wock = $wock;
 	app.provide('$wock', $wock);

@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v3.1.2 - 2023.05.30 14
+* fix buggy legacy code
+
+
 ## v3.1.1 - 2023.05.29 16
 * improve little locales
 
