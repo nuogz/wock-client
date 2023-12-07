@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## v3.2.0 - 2023.12.07 09
+* tweak enviroment
+* bump up dependencies
+
+
 ## v3.1.2 - 2023.05.30 14
 * fix buggy legacy code
 

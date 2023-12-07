@@ -4,7 +4,7 @@ export default class Wock {
      * @param {WockOption} [option]
      * @param {WebSocket} [webSocketExternal]
      */
-    constructor(url: string, option?: WockOption, webSocketExternal?: WebSocket);
+    constructor(url: string, option?: WockOption | undefined, webSocketExternal?: WebSocket | undefined);
     /** @type {typeof WebSocket} */
     WebSocket: typeof WebSocket;
     /** @type {string} */
@@ -63,12 +63,12 @@ export default class Wock {
      * reset heartbeat timeout
      * @param {boolean} [isResetWaitout=true]
      */
-    resetHeartbeat(isResetWaitout?: boolean): void;
+    resetHeartbeat(isResetWaitout?: boolean | undefined): void;
     /**
      * send heartbeat message regularly
      * @param {boolean} [isResetWaitout=true]
      */
-    checkHeartbeat(isResetWaitout?: boolean): void;
+    checkHeartbeat(isResetWaitout?: boolean | undefined): void;
     /**
      * @param {string} reason
      * @param {boolean} isReopen
@@ -82,13 +82,13 @@ export default class Wock {
      * @param {...any} [data]
      * @returns {void}
      */
-    cast(type: string, ...data?: any[]): void;
+    cast(type: string, ...data?: any[] | undefined): void;
     /**
      * @param {WockEvent} event
      * @param {boolean} [isOnce=false]
      * @returns {void}
      */
-    emit(event?: WockEvent, isOnce?: boolean): void;
+    emit(event?: WockEvent, isOnce?: boolean | undefined): void;
     /**
      * @param {WockEvent} event
      * @returns {void}
@@ -101,7 +101,7 @@ export default class Wock {
      * @param {boolean} [isOnce=false]
      * @returns {void}
      */
-    add(type: string, handle: WockEventHandle, isOnce?: boolean): void;
+    add(type: string, handle: WockEventHandle, isOnce?: boolean | undefined): void;
     /**
      * delete a handle of event
      * @param {string} type
@@ -109,28 +109,28 @@ export default class Wock {
      * @param {boolean} [isOnce=false]
      * @returns {void}
      */
-    del(type: string, handle: WockEventHandle, isOnce?: boolean): void;
+    del(type: string, handle: WockEventHandle, isOnce?: boolean | undefined): void;
     /**
      * get the handles of event
      * @param {string} type
      * @param {boolean} [isOnce=false]
      * @returns {WockEventHandle[]}
      */
-    get(type: string, isOnce?: boolean): WockEventHandle[];
+    get(type: string, isOnce?: boolean | undefined): WockEventHandle[];
     /**
      * run the handles of event
      * @param {string} type
      * @param {boolean} [isOnce=false]
      * @param {...any} [data]
      */
-    run(type: string, isOnce?: boolean, ...data?: any[]): void;
+    run(type: string, isOnce?: boolean | undefined, ...data?: any[] | undefined): void;
     /**
      * add a handle of event, and run it
      * @param {string} type
      * @param {WockEventHandle} handle
      * @param {...any} [data]
      */
-    aun(type: string, handle: WockEventHandle, ...data?: any[]): void;
+    aun(type: string, handle: WockEventHandle, ...data?: any[] | undefined): void;
 }
 /** @type {Wock} */
 export let $wock: Wock;
@@ -138,16 +138,16 @@ export function install(app: any): void;
 export type LoggerLike = import("@nuogz/utility/src/inject-base-logger.pure.js").LoggerLike;
 export type LoggerOption = import("@nuogz/utility/src/inject-base-logger.pure.js").LoggerOption;
 export type WockOption = {
-    isHeartbeat?: boolean;
-    intervalPing?: number;
-    intervalWait?: number;
-    isReopen?: boolean;
-    intervalReopen?: number;
-    isLogHighlight?: boolean;
-    logger?: LoggerOption;
+    isHeartbeat?: boolean | undefined;
+    intervalPing?: number | undefined;
+    intervalWait?: number | undefined;
+    isReopen?: boolean | undefined;
+    intervalReopen?: number | undefined;
+    isLogHighlight?: boolean | undefined;
+    logger?: import("@nuogz/utility/src/inject-base-logger.pure.js").LoggerOption | undefined;
 };
 export type WockEvent = {
     type: string;
-    data?: any[];
+    data?: any[] | undefined;
 };
-export type WockEventHandle = (wock: Wock, ...data?: any[]) => void | Promise<void>;
+export type WockEventHandle = (wock: Wock, ...data?: any[] | undefined) => void | Promise<void>;

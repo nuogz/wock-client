@@ -1,22 +1,23 @@
 {
 	"name": "@nuogz/wock-client",
-	"version": "3.1.2",
+	"version": "3.2.0",
 	"description": "WebSocket client library",
-	"author": "Nuogz",
+	"author": "DanoR",
 	"license": "LGPL-3.0-or-later",
 	"repository": {
 		"type": "git",
 		"url": "github:nuogz/wock-client"
 	},
+	"private": false,
 	"type": "module",
 	"typesSource": [
 		"node",
 		"browser"
 	],
+	"sideEffects": false,
 	"engines": {
 		"node": ">=14.18.1"
 	},
-	"sideEffects": false,
 	"main": "./index.js",
 	"browser": {
 		"./src/i18n.lib.js": "./src/i18n.js"
@@ -27,15 +28,16 @@
 		"locale/**",
 		"**/*.d.ts"
 	],
+	"typings": "./index.d.ts",
 	"scripts": {
-		"emitDeclaration": "tsc ./index.js --declaration --emitDeclarationOnly --allowJs --moduleResolution nodenext --module esnext --target esnext --experimentalDecorators"
-	},
-	"devDependencies": {
-		"eslint": "^8.41.0",
-		"typescript": "^5.0.4"
+		"emitDeclaration": "tsc ./index.js --declaration --emitDeclarationOnly --moduleResolution bundler --module esnext --target esnext --experimentalDecorators --strict --allowJs --jsx preserve"
 	},
 	"dependencies": {
-		"@nuogz/i18n": "^3.2.1",
-		"@nuogz/utility": "^1.7.0"
+		"@nuogz/i18n": "^3.3.1",
+		"@nuogz/utility": "^1.8.1"
+	},
+	"devDependencies": {
+		"eslint": "^8.55.0",
+		"typescript": "^5.3.3"
 	}
 }
