@@ -4,13 +4,13 @@ export default class Wock {
      * @param {WockOption} [option]
      * @param {WebSocket} [webSocketExternal]
      */
-    constructor(url: string, option?: WockOption | undefined, webSocketExternal?: WebSocket | undefined);
+    constructor(url: string, option?: WockOption, webSocketExternal?: WebSocket | undefined);
     /** @type {typeof WebSocket} */
     WebSocket: typeof WebSocket;
     /** @type {string} */
     url: string;
     /** @type {boolean} */
-    isHeartbeat: boolean;
+    willHeartbeat: boolean;
     /** @type {number} */
     intervalPing: number;
     /** @type {number} */
@@ -135,19 +135,8 @@ export default class Wock {
 /** @type {Wock} */
 export let $wock: Wock;
 export function install(app: any): void;
-export type LoggerLike = import("@nuogz/utility/src/inject-base-logger.pure.js").LoggerLike;
-export type LoggerOption = import("@nuogz/utility/src/inject-base-logger.pure.js").LoggerOption;
-export type WockOption = {
-    isHeartbeat?: boolean | undefined;
-    intervalPing?: number | undefined;
-    intervalWait?: number | undefined;
-    isReopen?: boolean | undefined;
-    intervalReopen?: number | undefined;
-    isLogHighlight?: boolean | undefined;
-    logger?: import("@nuogz/utility/src/inject-base-logger.pure.js").LoggerOption | undefined;
-};
-export type WockEvent = {
-    type: string;
-    data?: any[] | undefined;
-};
-export type WockEventHandle = (wock: Wock, ...data?: any[] | undefined) => void | Promise<void>;
+export type WockOption = import("../bases.d.ts").WockOption;
+export type WockEvent = import("../bases.d.ts").WockEvent;
+export type WockEventHandle = import("../bases.d.ts").WockEventHandle;
+export type LoggerLike = import("@nuogz/utility/types/src/inject-base-logger.pure.js").LoggerLike;
+export type LoggerOption = import("@nuogz/utility/types/src/inject-base-logger.pure.js").LoggerOption;

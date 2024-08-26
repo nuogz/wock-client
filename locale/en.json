@@ -1,32 +1,15 @@
 {
-	"install@proto": "install",
-	"reopen@proto": "reopen",
-	"ArgumentError": {
-		"invalidType@proto": "'type' argument must be of type non-empty string, value: {{-value,valueType}}",
-		"invalidType@hades": "~[type] argument must be of type non-empty ~{string}, value {{-value,valueType@hades}}",
-		"invalidHandle@proto": "'handle' argument must be of type function, value: {{-value,valueType}}",
-		"invalidHandle@hades": "~[handle] argument must be of type ~{function}, value {{-value,valueType@hades}}"
-	},
-	"Error": {
-		"cast@proto": "Wock cast error",
-		"cast@hades": "~[Wock] cast error",
-		"event@proto": "Wock event '{{type}}' error",
-		"event@hades": "~[Wock] event {{type,value@hades}} error",
-		"eventOnce@proto": "Wock disposable event '{{type}}' error",
-		"eventOnce@hades": "~[Wock] disposable event {{type,value@hades}} error"
-	},
-	"Occur": {
-		"open@proto": "Wock opened, address: {{address}}, reason: {{reason}}",
-		"open@hades": "~[Wock] opened, ~[address] {{address,value@hades}}, ~[reason] {{reason,value@hades}}",
-		"close@proto": "Wock closed, reason: {{reason}}, code: {{code}}",
-		"close@hades": "~[Wock] closed, ~[reason] {{reason,value@hades}}, ~[code] {{code,value@hades}}",
-		"error@proto": "Wock error occured, reason: {{reason}}",
-		"error@hades": "~[Wock] error occured, ~[reason] {{reason,value@hades}}"
-	},
-	"unknownReason@proto": "unknown reason",
-	"unknownReason@hades": "unknown reason",
-	"unknownCode@proto": "unknown code",
-	"unknownCode@hades": "unknown code",
-	"heartbeatTimeout@proto": "heartbeat timeout",
-	"heartbeatTimeout@hades": "heartbeat timeout"
+	"install": "install",
+	"reopen": "reopen",
+	"invalid-argument-type": "~[type] argument must be of type non-empty ~{string}, value {{-value,valueType}}",
+	"invalid-argument-handle": "~[handle] argument must be of type ~{function}, value {{-value,valueType}}",
+	"cast-error": "~[Wock] cast error",
+	"event-error": "~[Wock] event {{type,value}} error",
+	"event-once-error": "~[Wock] disposable event {{type,value}} error",
+	"open-occur": "~[Wock] opened, ~[address] {{address,value}}, ~[reason] {{reason,value}}",
+	"close-occur": "~[Wock] closed, ~[reason] {{reason,value}}, ~[code] {{code,value}}",
+	"error-occur": "~[Wock] error occured, ~[reason] {{reason,value}}",
+	"unknown-reason": "unknown reason",
+	"unknown-code": "unknown code",
+	"heartbeat-timeout": "heartbeat timeout"
 }

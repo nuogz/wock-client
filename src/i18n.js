@@ -9,4 +9,4 @@ import zh from '../locale/zh.json';
 loadI18NResource('@nuogz/wock-client', { en, zh });
 
 
-export const T = TT('@nuogz/wock-client');
+export const { T, TS } = TT('@nuogz/wock-client');

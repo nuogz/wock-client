@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## v3.3.0 - 2024.08.26 17
+* refactor: renew codes to adapt to latest `@nuogz/i18n`
+* refactor: raname some varbiables
+* docs: renew locale with latest `@nuogz/i18n`
+* deps: bump up dependencies
+* chore: renew develop environments
+
+
 ## v3.2.0 - 2023.12.07 09
 * tweak enviroment
 * bump up dependencies

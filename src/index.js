@@ -1,42 +1,19 @@
 import { injectBaseLogger } from '@nuogz/utility';
 
-import { T } from './src/i18n.lib.js';
+import { T } from './i18n.lib.js';
 
 
 
-/** @typedef {import("@nuogz/utility/src/inject-base-logger.pure.js").LoggerLike} LoggerLike */
+/** @typedef {import("../bases.d.ts").WockOption} WockOption */
+/** @typedef {import("../bases.d.ts").WockEvent} WockEvent */
+/** @typedef {import("../bases.d.ts").WockEventHandle} WockEventHandle */
 
-/** @typedef {import("@nuogz/utility/src/inject-base-logger.pure.js").LoggerOption} LoggerOption */
+/** @typedef {import("@nuogz/utility/types/src/inject-base-logger.pure.js").LoggerLike} LoggerLike */
+/** @typedef {import('@nuogz/utility/types/src/inject-base-logger.pure.js').LoggerOption} LoggerOption */
 
-
-/**
- * @typedef {Object} WockOption
- * @property {boolean} [isHeartbeat=true]
- * @property {number} [intervalPing=10000]
- * @property {number} [intervalWait=24000]
- * @property {boolean} [isReopen=true]
- * @property {number} [intervalReopen=4000]
- * @property {boolean} [isLogHighlight=false]
- * @property {LoggerOption} [logger]
- */
-
-
-/**
- * @typedef {Object} WockEvent
- * @property {string} type
- * @property {any[]} [data]
- */
-
-/**
- * @callback WockEventHandle
- * @param {Wock} wock
- * @param {...any} [data]
- * @returns {void|Promise<void>}
- */
 
 
 const hasOption = (key, object) => key in object && object[key] !== undefined;
-
 
 
 export default class Wock {
@@ -49,7 +26,7 @@ export default class Wock {
 
 
 	/** @type {boolean} */
-	isHeartbeat = false;
+	willHeartbeat = false;
 
 	/** @type {number} */
 	intervalPing = 10000;
@@ -87,20 +64,20 @@ export default class Wock {
 	mapHandles = {
 		$error: [
 			(wock, event) => this.logError(
-				T('Occur.error', {
+				T('error-occur', {
 					reason: event?.error?.message
 						?? event?.error
 						?? event
-						?? T('unknownReason'),
+						?? T('unknown-reason'),
 				}),
 				event?.error?.stack ?? undefined,
 			),
 		],
 		$close: [
 			(wock, event) => this.logTrace(
-				T('Occur.close', {
-					reason: event?.reason || T('unknownReason'),
-					code: event?.code ?? T('unknownCode'),
+				T('close-occur', {
+					reason: event?.reason || T('unknown-reason'),
+					code: event?.code ?? T('unknown-code'),
 				})
 			),
 			() => {
@@ -119,7 +96,7 @@ export default class Wock {
 			},
 		],
 		$open: [
-			(wock, reason) => this.logInfo(T('Occur.open', { address: this.url, reason })),
+			(wock, reason) => this.logInfo(T('open-occur', { address: this.url, reason })),
 		],
 		ping: [
 			wock => wock.cast('pong'),
@@ -171,7 +148,7 @@ export default class Wock {
 		this.WebSocket = webSocketExternal;
 
 
-		this.isHeartbeat = hasOption('isHeartbeat', option) ? !!option.isHeartbeat : this.isHeartbeat;
+		this.willHeartbeat = hasOption('willHeartbeat', option) ? !!option.willHeartbeat : this.willHeartbeat;
 		this.intervalPing = hasOption('intervalPing', option) ? Number(option.intervalPing) : this.intervalPing;
 		this.intervalWait = hasOption('intervalWait', option) ? Number(option.intervalWait) : this.intervalWait;
 
@@ -214,7 +191,7 @@ export default class Wock {
 				this.countWaitout++;
 
 				if(this.countWaitout >= 4) {
-					this.websocket.close(4001, T('heartbeatTimeout'));
+					this.websocket.close(4001, T('heartbeat-timeout'));
 				}
 				else {
 					this.checkHeartbeat(false);
@@ -248,7 +225,7 @@ export default class Wock {
 				if(!isPending && isThrowError) {
 					isPending = true;
 
-					reject(event?.error?.message ?? event?.error ?? event ?? T('unknownReason'));
+					reject(event?.error?.message ?? event?.error ?? event ?? T('unknown-reason'));
 				}
 
 
@@ -266,7 +243,7 @@ export default class Wock {
 			});
 
 			websocket.addEventListener('message', async raw => {
-				if(this.isHeartbeat) { this.checkHeartbeat(); }
+				if(this.willHeartbeat) { this.checkHeartbeat(); }
 
 
 				try {
@@ -275,7 +252,7 @@ export default class Wock {
 
 					this.emitAll(event);
 				}
-				catch(error) { void 0; }
+				catch { void 0; }
 			});
 
 			websocket.addEventListener('open', () => {
@@ -283,7 +260,7 @@ export default class Wock {
 				this.isOpening = false;
 
 
-				if(this.isHeartbeat) {
+				if(this.willHeartbeat) {
 					this.checkHeartbeat();
 				}
 
@@ -304,7 +281,7 @@ export default class Wock {
 	 * @returns {void}
 	 */
 	cast(type, ...data) {
-		if(!type) { throw TypeError(T('ArgumentError.invalidType', { value: type }, 'Wock().cast')); }
+		if(!type) { throw TypeError(T('invalid-argument-type', { value: type }, 'Wock().cast')); }
 
 
 		try {
@@ -314,7 +291,7 @@ export default class Wock {
 			if(typeof error?.message == 'string' && ~error.message.indexOf('CLOSED')) { return; }
 
 
-			this.logError(T('Error.cast'), error.message ?? error, error.stack ?? undefined);
+			this.logError(T('cast-error'), error.message ?? error, error.stack ?? undefined);
 		}
 	}
 
@@ -340,7 +317,7 @@ export default class Wock {
 					await handle(this, ...data);
 				}
 				catch(error) {
-					this.logError(T('Error.eventOnce', { type }), error?.message ?? error ?? T('unknownReason'), error.stack ?? undefined);
+					this.logError(T('event-once-error', { type }), error?.message ?? error ?? T('unknown-reason'), error.stack ?? undefined);
 				}
 			}
 		}
@@ -352,7 +329,7 @@ export default class Wock {
 					await handle(this, ...data);
 				}
 				catch(error) {
-					this.logError(T('Error.event', { type }), error?.message ?? error ?? T('unknownReason'), error.stack ?? undefined);
+					this.logError(T('event-error', { type }), error?.message ?? error ?? T('unknown-reason'), error.stack ?? undefined);
 				}
 			}
 		}
@@ -376,8 +353,8 @@ export default class Wock {
 	 * @returns {void}
 	 */
 	add(type, handle, isOnce = false) {
-		if(!type) { throw TypeError(T('ArgumentError.invalidType', { value: type }, 'Wock().add')); }
-		if(typeof handle != 'function') { throw TypeError(T('ArgumentError.invalidHandle', { value: handle }, 'Wock().add')); }
+		if(!type) { throw TypeError(T('invalid-argument-type', { value: type }, 'Wock().add')); }
+		if(typeof handle != 'function') { throw TypeError(T('invalid-argument-handle', { value: handle }, 'Wock().add')); }
 
 
 		const mapHandles = isOnce ? this.mapHandlesOnce : this.mapHandles;
@@ -392,8 +369,8 @@ export default class Wock {
 	 * @returns {void}
 	 */
 	del(type, handle, isOnce = false) {
-		if(!type) { throw TypeError(T('ArgumentError.invalidType', { value: type }, 'Wock().del')); }
-		if(typeof handle != 'function') { throw TypeError(T('ArgumentError.invalidHandle', { value: handle }, 'Wock().del')); }
+		if(!type) { throw TypeError(T('invalid-argument-type', { value: type }, 'Wock().del')); }
+		if(typeof handle != 'function') { throw TypeError(T('invalid-argument-handle', { value: handle }, 'Wock().del')); }
 
 
 		const mapHandles = isOnce ? this.mapHandlesOnce : this.mapHandles;
@@ -413,7 +390,7 @@ export default class Wock {
 	 * @returns {WockEventHandle[]}
 	 */
 	get(type, isOnce = false) {
-		if(!type) { throw TypeError(T('ArgumentError.invalidType', { value: type }, 'Wock().get')); }
+		if(!type) { throw TypeError(T('invalid-argument-type', { value: type }, 'Wock().get')); }
 
 
 		const mapHandles = isOnce ? this.mapHandlesOnce : this.mapHandles;
@@ -427,7 +404,7 @@ export default class Wock {
 	 * @param {...any} [data]
 	 */
 	run(type, isOnce = false, ...data) {
-		if(!type) { throw TypeError(T('ArgumentError.invalidType', { value: type }, 'Wock().run')); }
+		if(!type) { throw TypeError(T('invalid-argument-type', { value: type }, 'Wock().run')); }
 
 
 		this.emit({ type, data }, isOnce);
@@ -439,7 +416,7 @@ export default class Wock {
 	 * @param {...any} [data]
 	 */
 	aun(type, handle, ...data) {
-		if(!type) { throw TypeError(T('ArgumentError.invalidType', { value: type }, 'Wock().aun')); }
+		if(!type) { throw TypeError(T('invalid-argument-type', { value: type }, 'Wock().aun')); }
 
 
 		this.add(type, handle);
